@@ -1,9 +1,10 @@
 #pragma once
 #include<iostream>
+#include"GLContext.h"
 class Shader{
 public:
-	Shader(unsigned int shaderType,std::string shaderPath);
-	Shader(unsigned int shaderType);
+	Shader(unsigned int shaderType,std::string shaderPath, GLContext &context);
+	Shader(unsigned int shaderType, GLContext &context);
 	void LoadShaderSource();
 	void CompileShader();
 	unsigned int getShaderID();

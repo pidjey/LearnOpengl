@@ -6,7 +6,8 @@
 class Window {
 public:
 	Window(int width, int height, std::string title);
-	int CreateWindow();
+	void CreateWindow();
+	GLADloadproc getOpenglFunAddrFinder();
 private:
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 	GLFWwindow* window;

@@ -10,24 +10,22 @@ Window::Window(int width, int height, std::string title) :
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	#endif
 };
-int Window::CreateWindow() 
+void Window::CreateWindow()
 {
 	window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
 	if (window == NULL)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
-		return 0;
+		throw "Failed to create GLFW window";
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	if (!gladLoadGL())//!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return 0;
-	}
-	return 1;
 };
+GLADloadproc Window::getOpenglFunAddrFinder()
+{
+	return (GLADloadproc)glfwGetProcAddress;
+};
+
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height) 
 {
 	glViewport(0, 0, width, height);

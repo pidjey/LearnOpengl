@@ -3,14 +3,25 @@
 #include<fstream>
 #include<string>
 #include<glad/glad.h>
-Shader::Shader(unsigned int shaderType, std::string shaderPath) :
+Shader::Shader(unsigned int shaderType, std::string shaderPath, GLContext &context) :
 	shaderPath(shaderPath),
 	shaderType(shaderType)
 {
-	this->shaderID = glCreateShader(shaderType);
+	if (context.isSuccess()) {
+		this->shaderID = glCreateShader(shaderType);
+	}
+	else {
+		throw "Could not get context";
+	}
+	
 }
-Shader::Shader(unsigned int shaderType) : shaderType(shaderType) {
-
+Shader::Shader(unsigned int shaderType, GLContext &context) : shaderType(shaderType) {
+	if (context.isSuccess()) {
+		this->shaderID = glCreateShader(shaderType);
+	}
+	else {
+		throw "Could not get context";
+	}
 }
 
 void Shader::LoadShaderSource() {

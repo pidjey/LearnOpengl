@@ -40,8 +40,9 @@ int main()
 {
 	Window *janela = new Window(800, 800, "learnopengl");
 	janela->CreateWindow();
+	GLContext context(janela->getOpenglFunAddrFinder());
 
-	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\teste.txt");
+	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\teste.txt", context);
 	try {
 		vertexShader->LoadShaderSource();
 		vertexShader->CompileShader();
