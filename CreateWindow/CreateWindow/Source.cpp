@@ -55,7 +55,7 @@ int main()
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	Shader::setUniform(program, "offset", 0.4);
+	Shader::setUniform(program, "offset", 0.4); //
 	while (!janela->shouldClose())
 	{
 		// input
