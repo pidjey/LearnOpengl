@@ -15,7 +15,7 @@ float vertices[] = {
 
 int main()
 {
-	Window *janela = new Window(800, 800, "learnopengl");
+	Window *janela = new Window(500, 500, "learnopengl");
 	janela->CreateWindow();
 	GLContext context(janela->getOpenglFunAddrFinder());
 
