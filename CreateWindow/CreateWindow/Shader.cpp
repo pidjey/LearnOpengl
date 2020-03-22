@@ -26,6 +26,9 @@ Shader::Shader(unsigned int shaderType, GLContext &context) :
 		throw "Could not get context";
 	}
 }
+Shader::~Shader() {
+	glDeleteShader(this->shaderID);
+}
 
 void Shader::LoadShaderSource() {
 	std::fstream shaderSource;
@@ -107,5 +110,22 @@ void Shader::checkProgramLinkError(unsigned int program)
 		error.append(infoLog);
 		throw error;
 	}
+}
+
+void Shader::setUniform(unsigned int program, std::string varName, float v1 ) {
+	int uniformLocation = glGetUniformLocation(program, varName.c_str());
+	glUniform1f(uniformLocation, v1);
+}
+void Shader::setUniform(unsigned int program, std::string varName, float v1, float v2) {
+	int uniformLocation = glGetUniformLocation(program, varName.c_str());
+	glUniform2f(uniformLocation, v1, v2);
+}
+void Shader::setUniform(unsigned int program, std::string varName, float v1, float v2, float v3) {
+	int uniformLocation = glGetUniformLocation(program, varName.c_str());
+	glUniform3f(uniformLocation, v1, v2, v3);
+}
+void Shader::setUniform(unsigned int program, std::string varName, float v1, float v2, float v3, float v4) {
+	int uniformLocation = glGetUniformLocation(program, varName.c_str());
+	glUniform4f(uniformLocation, v1, v2, v3, v4);
 }
 
