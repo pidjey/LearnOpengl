@@ -3,6 +3,7 @@
 #include<fstream>
 #include<string>
 #include<glad/glad.h>
+#include<algorithm>
 Shader::Shader(unsigned int shaderType, std::string shaderPath, GLContext &context) :
 	shaderPath(shaderPath),
 	shaderType(shaderType)
@@ -15,7 +16,9 @@ Shader::Shader(unsigned int shaderType, std::string shaderPath, GLContext &conte
 	}
 	
 }
-Shader::Shader(unsigned int shaderType, GLContext &context) : shaderType(shaderType) {
+Shader::Shader(unsigned int shaderType, GLContext &context) : 
+	shaderType(shaderType) 
+{
 	if (context.isSuccess()) {
 		this->shaderID = glCreateShader(shaderType);
 	}
@@ -27,9 +30,16 @@ Shader::Shader(unsigned int shaderType, GLContext &context) : shaderType(shaderT
 void Shader::LoadShaderSource() {
 	std::fstream shaderSource;
 	shaderSource.open(this->shaderPath);
-	std::string line;
+	std::string line, code;
 	while (std::getline(shaderSource, line)) {
-		this->shader.append(line + "\n");
+		code.append(line + "\n");
+	}
+	if (std::all_of(code.begin(), code.end(), isspace) || !shaderSource.is_open()) {
+		throw "Couldn't open file or it's only whitespace!";
+	}
+	else
+	{
+		this->shader = code;
 	}
 	//TODO: throw if file not exist or have only whitespace
 }

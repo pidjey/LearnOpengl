@@ -8,9 +8,9 @@
 
 float vertices[] = {
 	// positions         // colors
- 0.5f, -0.5f, 0.0f, // 1.0f, 0.0f, 0.0f,   // bottom right
--0.5f, -0.5f, 0.0f, // 0.0f, 1.0f, 0.0f,   // bottom left
- 0.0f,  0.5f, 0.0f, // 0.0f, 0.0f, 1.0f    // top 
+ 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   // bottom right
+-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // bottom left
+ 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top 
 };
 
 int main()
@@ -19,32 +19,17 @@ int main()
 	janela->CreateWindow();
 	GLContext context(janela->getOpenglFunAddrFinder());
 
-	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\vertex.txt", context);
-	try {
-		vertexShader->LoadShaderSource();
-		vertexShader->CompileShader();
-	}
-	catch (std::exception e) {
-		std::cout << e.what() << std::endl;
-	}
-	catch (std::string err) {
-		std::cerr << err;
-	}
-	Shader *fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:\\Users\\pj\\Documents\\resources\\fragment.txt", context);
-	try {
-		fragmentShader->LoadShaderSource();
-		fragmentShader->CompileShader();
-	}
-	catch (std::exception e) {
-		std::cout << e.what() << std::endl;
-	}
-	catch (std::string err) {
-		std::cerr << err;
-	}
+	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\vertex.vert", context);
+	vertexShader->LoadShaderSource();
+	vertexShader->CompileShader();
+
+	Shader *fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:\\Users\\pj\\Documents\\resources\\fragment.frag", context);
+	fragmentShader->LoadShaderSource();
+	fragmentShader->CompileShader();
+
 	unsigned int program = *vertexShader + *fragmentShader;
 	Shader::linkProgram(program);
 	glUseProgram(program);
-	
 	delete vertexShader;
 	delete fragmentShader;
 
@@ -56,9 +41,11 @@ int main()
 	unsigned int firstVAO;
 	glGenVertexArrays(1, &firstVAO);
 	glBindVertexArray(firstVAO);
-	//glVertexAttribPointer() interpret parameters relative to the currently bound buffer.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glVertexAttribPointer() interprets parameters relative to the currently bound (vbo) buffer.
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 
 	//unsigned int EBO;
