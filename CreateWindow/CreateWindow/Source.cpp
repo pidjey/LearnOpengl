@@ -19,11 +19,11 @@ int main()
 	janela->CreateWindow();
 	GLContext context(janela->getOpenglFunAddrFinder());
 
-	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\vertex.vert", context);
+	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\Programming\\opengl\\LearnOpenGl\\LearnOpengl\\CreateWindow\\Resources\\vertex.vert", context);
 	vertexShader->LoadShaderSource();
 	vertexShader->CompileShader();
 
-	Shader *fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:\\Users\\pj\\Documents\\resources\\fragment.frag", context);
+	Shader *fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:\\Users\\pj\\Documents\\Programming\\opengl\\LearnOpenGl\\LearnOpengl\\CreateWindow\\Resources\\fragment.frag", context);
 	fragmentShader->LoadShaderSource();
 	fragmentShader->CompileShader();
 
@@ -55,7 +55,7 @@ int main()
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	Shader::setUniform(program, "offset", 0.4);
+	Shader::setUniform(program, "offset", 0.4f);
 	while (!janela->shouldClose())
 	{
 		// input

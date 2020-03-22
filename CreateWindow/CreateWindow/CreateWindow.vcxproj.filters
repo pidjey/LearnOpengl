@@ -43,11 +43,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\..\resources\vertex.vert">
+    <None Include="..\Resources\fragment.frag">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="..\..\..\..\..\..\resources\fragment.frag">
+    </None>
+    <None Include="..\Resources\vertex.vert">
       <Filter>Resource Files</Filter>
-    </Text>
+    </None>
   </ItemGroup>
 </Project>
