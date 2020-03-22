@@ -10,6 +10,9 @@ Window::Window(int width, int height, std::string title) :
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	#endif
 };
+Window::~Window() {
+	glfwTerminate();
+}
 void Window::CreateWindow()
 {
 	window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
@@ -30,3 +33,23 @@ void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height
 {
 	glViewport(0, 0, width, height);
 };
+
+void Window::processInput()
+{
+	if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(this->window, true);
+}
+
+void Window::swapBuffer()
+{
+	glfwSwapBuffers(this->window);
+}
+
+void Window::pollEvents()
+{
+	glfwPollEvents();
+}
+
+int Window::shouldClose() {
+	return glfwWindowShouldClose(this->window);
+}

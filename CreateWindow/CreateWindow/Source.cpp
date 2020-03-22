@@ -42,7 +42,7 @@ int main()
 	janela->CreateWindow();
 	GLContext context(janela->getOpenglFunAddrFinder());
 
-	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\teste.txt", context);
+	Shader *vertexShader = new Shader(GL_VERTEX_SHADER, "C:\\Users\\pj\\Documents\\resources\\vertex.txt", context);
 	try {
 		vertexShader->LoadShaderSource();
 		vertexShader->CompileShader();
@@ -53,9 +53,23 @@ int main()
 	catch (std::string err) {
 		std::cerr << err;
 	}
-	
+	Shader *fragmentShader = new Shader(GL_FRAGMENT_SHADER, "C:\\Users\\pj\\Documents\\resources\\fragment.txt", context);
+	try {
+		fragmentShader->LoadShaderSource();
+		fragmentShader->CompileShader();
+	}
+	catch (std::exception e) {
+		std::cout << e.what() << std::endl;
+	}
+	catch (std::string err) {
+		std::cerr << err;
+	}
+	unsigned int program = *vertexShader + *fragmentShader;
+	Shader::linkProgram(program);
+	glUseProgram(program);
 	
 	delete vertexShader;
+	delete fragmentShader;
 	//// vertex shader
 	//// -------------
 	//unsigned int vertexShader;
@@ -135,18 +149,18 @@ int main()
 	////glDeleteShader(vertexShader);
 	////glDeleteShader(fragmentShader);
 
-	//// VBO
-	//unsigned int firstVBO;
-	//glGenBuffers(1, &firstVBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, firstVBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(firstTriangle), firstTriangle, GL_STATIC_DRAW);
+	// VBO
+	unsigned int firstVBO;
+	glGenBuffers(1, &firstVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, firstVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//unsigned int firstVAO;
-	//glGenVertexArrays(1, &firstVAO);
-	//glBindVertexArray(firstVAO);
-	////glVertexAttribPointer() interpret the parameters are relative to the currently bound buffer.
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
+	unsigned int firstVAO;
+	glGenVertexArrays(1, &firstVAO);
+	glBindVertexArray(firstVAO);
+	//glVertexAttribPointer() interpret the parameters are relative to the currently bound buffer.
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 
 
 	//unsigned int secondVBO;
@@ -171,58 +185,30 @@ int main()
 
 	//// render loop
 	//// -----------
-	//while (!glfwWindowShouldClose(window))
-	//{
-	//	// input
-	//	// -----
-	//	processInput(window);
+	while (!janela->shouldClose())
+	{
+		// input
+		// -----
+		janela->processInput();
 
-	//	// render
-	//	// ------
-	//	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	//	glClear(GL_COLOR_BUFFER_BIT);
+		// render
+		// ------
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
 
-	//	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	//	float timeValue = glfwGetTime();
-	//	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-	//	int vertexColorLocation = glGetUniformLocation(firstShaderProgram, "ourColor");
-	//	if (vertexColorLocation == -1) {
-	//		std::cout << "Could not find uniform location" << std::endl;
-	//		return -1;
-	//	}
-	//	glUseProgram(firstShaderProgram);
-	//	glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-	//	
-	//	glDrawArrays(GL_TRIANGLES, 0, 6);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glUseProgram(program);
 
-	//	
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-	//	// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-	//	// -------------------------------------------------------------------------------
-	//	glfwSwapBuffers(window);
-	//	glfwPollEvents();
-	//	
-	//}
+		
 
-	//// glfw: terminate, clearing all previously allocated GLFW resources.
-	//// ------------------------------------------------------------------
-	//glfwTerminate();
+		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+		// -------------------------------------------------------------------------------
+		janela->swapBuffer();
+		janela->pollEvents();
+		
+	}
+	delete janela;
 	return 0;
-}
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-}
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
-	glViewport(0, 0, width, height);
 }
